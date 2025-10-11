@@ -33,7 +33,7 @@
       </ul>
     </div>
 
-    <div class="right">
+    <!-- <div class="right">
       <el-icon
         class="btn console-box art-custom-card"
         @click="(e: MouseEvent) => showMenu(e, activeTab)"
@@ -48,7 +48,7 @@
       :menu-width="140"
       :border-radius="10"
       @select="handleSelect"
-    />
+    /> -->
   </div>
 </template>
 

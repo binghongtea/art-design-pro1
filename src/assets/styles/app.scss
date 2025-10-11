@@ -243,3 +243,28 @@
   left: auto !important;
   transform: none !important;
 }
+
+// 设备管理普遍样式
+.fatherCard { 
+  position: relative;
+    box-sizing: border-box;
+    padding: 20px;
+    overflow: hidden;
+    background: var(--art-main-bg-color);
+    border-radius: calc(var(--custom-radius) / 2 + 2px) !important;
+    border: 1px solid var(--art-card-border) !important;
+    font-size: 14px;
+    display: flex;
+    .leftList{
+      display: flex;
+      flex-direction: column;
+      width: 250px;
+      .item{
+        padding: 10px;
+        cursor: pointer;
+      }
+      .selected{
+        background-color: rgba(var(--art-gray-200-rgb), 0.8) !important;
+      }
+    }
+}

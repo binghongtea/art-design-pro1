@@ -173,5 +173,27 @@ export const asyncRoutes: AppRouteRecord[] = [
         }
       }
     ]
-  }
+  },
+  {
+    path: '/equip',
+    name: 'Equip',
+    component: RoutesAlias.Layout,
+    meta: {
+      title: '设备管理',
+      icon: '&#xe8ae;',
+      roles: ['R_SUPER', 'R_ADMIN']
+    },
+    children: [
+      {
+        path: 'abuild',
+        name: 'EquipBuild',
+        component: RoutesAlias.EquipBuild,
+        meta: {
+          title: '楼栋',
+          keepAlive: true,
+          roles: ['R_SUPER', 'R_ADMIN']
+        }
+      }
+    ]
+  },
 ]
