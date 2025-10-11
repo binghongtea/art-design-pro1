@@ -1,9 +1,33 @@
 <template>
-  <div class="fatherCard">
-    <LeftList :list="leftList" :clickItem="clickItem" />
-    <canvas ref="canvasRef" width="1345" height="782"></canvas>
-    <!-- -->
-  </div>
+    <div class="fatherCard">
+        <LeftList :list="leftList" :clickItem="clickItem" />
+        <canvas ref="canvasRef" width="1345" height="782"></canvas>
+        <!-- 新增点位信息详情弹窗 -->
+        <div v-if="showPopup" :style="{ left: popupX + 'px', top: popupY + 'px' }" class="popup">
+            <div class="row">
+                <div class="round" style="background-color: #999;"></div>
+                <span>名称：</span>
+                <span style="color: #333;">{{ popupInfo.name }}</span>
+            </div>
+            <div class="row">
+                <div class="round" style="background-color: #3BBD6F;"></div>
+                <span>正常：</span>
+                <span style="color: #3BBD6F;">{{ popupInfo.sort }}</span>
+            </div>
+            <div class="row">
+                <div class="round" style="background-color: #FF2E2E;"></div>
+                <span>异常：</span>
+                <span style="color: #FF2E2E;">{{ popupInfo.sort }}</span>
+            </div>
+            <div class="row">
+                <div class="round" style="background-color: #FF6E2E;"></div>
+                <span>维修中：</span>
+                <span style="color: #FF6E2E;">{{ popupInfo.sort }}</span>
+            </div>
+        </div>
+        <!-- -->
+    </div>
+    <DetailDialog v-if="isShowDetailDialog" dialogKey="isShowDetailDialog" :skipData="selPoint"></DetailDialog>
 </template>
 
 <script lang="ts" setup>
@@ -14,23 +38,24 @@ import sel from '@/assets/img/equip/sel.png'
 import green from '@/assets/img/equip/green.png'
 import orange from '@/assets/img/equip/orange.png'
 import red from '@/assets/img/equip/red.png'
+import DetailDialog from './component/detailDialog.vue';
 import { ref, onMounted } from 'vue';
 
 // 左侧列表
 const leftList: any = ref([
-  {
-    id: '1',
-    label: '一层'
-  },
-  {
-    id: '2',
-    label: '二层'
-  },
+    {
+        id: '1',
+        label: '一层'
+    },
+    {
+        id: '2',
+        label: '二层'
+    },
 ])
 
 const clickItem = (item: any) => {
 
-  console.log(item)
+    console.log(item)
 }
 
 // 初始化画布
@@ -93,7 +118,16 @@ const pointList = ref(
         sort: '7'
     }]
 )
-
+// 选中点位
+const selPoint: any = ref({
+        name: '4号宿舍楼',
+        maplat: '525',
+        maplon: '490',
+        status: '1',
+        time: '09:12:25',
+        isSelected: false,
+        sort: '1'
+    })
 const canvasRef = ref<HTMLCanvasElement | null>(null);
 const scale = ref(1);
 const MIN_SCALE = 0.05;
@@ -144,7 +178,7 @@ const drawImage = () => {
             ctx.save();
             ctx.scale(scale.value, scale.value);
             ctx.translate(offsetX.value / scale.value, offsetY.value / scale.value);
-            ctx.drawImage(image,0,0, canvas.width, canvas.height);
+            ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
             // 绘制所有点
             points.value.forEach((point: any, _index: any) => {
                 // 判断点图片
@@ -301,8 +335,8 @@ const handleMouseMove = (event: MouseEvent) => {
 
         let isOverPoint = false;
         points.value.forEach((point: any) => {
-            const imageX = getPx(point.maplon) - 12;
-            const imageY = getPx(point.maplat) - 17;
+            const imageX = getPx(point.maplon);
+            const imageY = getPx(point.maplat);
             // 根据缩放比例调整图片的宽度和高度
             const imageWidth = 12 / scale.value;
             const imageHeight = 17 / scale.value;
@@ -318,8 +352,8 @@ const handleMouseMove = (event: MouseEvent) => {
                 popupInfo.value = point;
                 const actualX = getPx(point.maplon) * scale.value + offsetX.value;
                 const actualY = getPx(point.maplat) * scale.value + offsetY.value;
-                popupX.value = actualX + 12;
-                popupY.value = actualY - 40;
+                popupX.value = actualX + 12 + 280;
+                popupY.value = actualY + 40;
             }
         });
 
@@ -412,32 +446,39 @@ const handleClick = (event: MouseEvent) => {
 };
 
 onMounted(() => {
-  const canvas = canvasRef.value;
-  if (canvas) {
-    canvas.addEventListener('wheel', handleWheel);
+    const canvas = canvasRef.value;
+    if (canvas) {
+        canvas.addEventListener('wheel', handleWheel);
         canvas.addEventListener('mousedown', handleMouseDown);
         canvas.addEventListener('mousemove', handleMouseMove);
         canvas.addEventListener('mouseup', handleMouseUp);
         canvas.addEventListener('click', handleClick);
-    window.addEventListener('resize', (e) => {
-      console.log(e, 'sss');
-      drawImage();
-    });
-    image.onload = () => {
-      drawImage();
-    };
-  }
+        window.addEventListener('resize', (e) => {
+            console.log(e, 'sss');
+            drawImage();
+        });
+        image.onload = () => {
+            drawImage();
+        };
+    }
 })
+
+const isShowDetailDialog = ref(false)
+provide('isShowDetailDialog', isShowDetailDialog)
 </script>
 <style scoped>
-  /* 固定 canvas 的显示尺寸，避免随父容器拉伸而变化 */
-  .fatherCard {
-    align-items: flex-start; /* 取消默认的 stretch，避免子项高度拉伸 */
-  }
+/* 固定 canvas 的显示尺寸，避免随父容器拉伸而变化 */
+.fatherCard {
+    align-items: flex-start;
+    /* 取消默认的 stretch，避免子项高度拉伸 */
+}
 
-  canvas {
-    width: 1345px;  /* 与 canvas 属性 width 保持一致 */
-    height: 782px;  /* 与 canvas 属性 height 保持一致 */
-    flex: none;     /* 防止作为 flex 子项参与拉伸 */
-  }
+canvas {
+    width: 1345px;
+    /* 与 canvas 属性 width 保持一致 */
+    height: 782px;
+    /* 与 canvas 属性 height 保持一致 */
+    flex: none;
+    /* 防止作为 flex 子项参与拉伸 */
+}
 </style>
