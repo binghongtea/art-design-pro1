@@ -227,6 +227,12 @@
       "role": "角色管理",
       "userCenter": "个人中心",
       "menu": "菜单管理"
+    },
+    "equip": {
+      "title": "设备监控",
+      "abuild": "综合楼",
+      "bbuild": "康养楼",
+      "cbuild": "发热门诊"
     }
   },
   "table": {

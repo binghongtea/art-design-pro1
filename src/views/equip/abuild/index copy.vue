@@ -30,7 +30,7 @@
     <DetailDialog v-if="isShowDetailDialog" dialogKey="isShowDetailDialog" :skipData="selPoint"></DetailDialog>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 // @ts-ignore
 import LeftList from '@/components/equip/leftList.vue';
 import bizhi from '@/assets/img/equip/bizhi.png';
@@ -493,6 +493,18 @@ onMounted(() => {
                 drawImage();
             };
         }
+    }
+})
+
+onBeforeUnmount(() => {
+        const canvas = canvasRef.value;
+    if (canvas) {
+        canvas.removeEventListener('wheel', handleWheel);
+        canvas.removeEventListener('mousedown', handleMouseDown);
+        canvas.removeEventListener('mousemove', handleMouseMove);
+        canvas.removeEventListener('mouseup', handleMouseUp);
+        canvas.removeEventListener('click', handleClick);
+        window.removeEventListener('resize', handleResize);
     }
 })
 

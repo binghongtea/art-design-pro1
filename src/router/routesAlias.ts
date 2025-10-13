@@ -27,5 +27,8 @@ export enum RoutesAlias {
   Menu = '/system/menu', // 菜单
 
   // 设备管理
-  EquipBuild = '/equip/abuild', // 设备构建
+  EquipaBuild = '/equip/abuild', // 设备构建
+  EquipbBuild = '/equip/bbuild', // 设备构建
+  EquipcBuild = '/equip/cbuild', // 设备构建
+
 }

@@ -344,7 +344,12 @@
       router.push({
         path: item.path,
         query: item.query as LocationQueryRaw
-      })
+      }).then(() => {
+      if(item.path.includes('/equip')){
+        // 路由跳转完成后触发一次顶部刷新
+        settingStore.reload()
+      }
+    })
     }
 
     const closeWorktab = (type: TabCloseType, tabPath: string) => {

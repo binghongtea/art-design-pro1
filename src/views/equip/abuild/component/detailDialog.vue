@@ -34,9 +34,11 @@
             <el-table-column label="巡检人" prop="campusName" align="center"></el-table-column>
         </el-table>
 
-        <div class="groupBtn">
-            <el-button type="primary" @click="closeDialog()">关闭</el-button>
-        </div>
+        <template #footer>
+      <div class="dialog-footer">
+                    <el-button type="primary" @click="closeDialog()">关闭</el-button>
+      </div>
+    </template>
     </el-dialog>
 </template>
 

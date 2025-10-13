@@ -244,6 +244,18 @@
   transform: none !important;
 }
 
+// 页面大框
+.contentBox { 
+  position: relative;
+    box-sizing: border-box;
+    padding: 20px;
+    overflow: hidden;
+    background: var(--art-main-bg-color);
+    border-radius: calc(var(--custom-radius) / 2 + 2px) !important;
+    border: 1px solid var(--art-card-border) !important;
+    font-size: 14px;
+}
+
 // 设备管理普遍样式
 .fatherCard { 
   position: relative;
@@ -259,6 +271,13 @@
       display: flex;
       flex-direction: column;
       min-width: 250px;
+      box-sizing: border-box;
+      padding-right: 20px;
+      .title{
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
       .item{
         padding: 10px;
         cursor: pointer;

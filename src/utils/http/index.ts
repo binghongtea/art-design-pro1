@@ -159,13 +159,12 @@ async function request<T = any>(config: ExtendedAxiosRequestConfig): Promise<T> 
 
   try {
     const res = await axiosInstance.request<Http.BaseResponse<T>>(config)
-
     // 显示成功消息
     if (config.showSuccessMessage && res.data.msg) {
       showSuccess(res.data.msg)
     }
 
-    return res.data.data as T
+    return res.data as T
   } catch (error) {
     if (error instanceof HttpError && error.code !== ApiStatus.unauthorized) {
       const showMsg = config.showErrorMessage !== false

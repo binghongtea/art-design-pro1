@@ -235,7 +235,14 @@
       "role": "Role Manage",
       "userCenter": "User Center",
       "menu": "Menu Manage"
+    },
+        "equip": {
+      "title": "设备监控",
+      "abuild": "综合楼",
+      "bbuild": "康养楼",
+      "cbuild": "发热门诊"
     }
+
   },
   "table": {
     "form": {

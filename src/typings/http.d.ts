@@ -6,6 +6,6 @@ declare namespace Http {
     // 消息
     msg: string
     // 数据
-    data: T
+    result: T
   }
 }

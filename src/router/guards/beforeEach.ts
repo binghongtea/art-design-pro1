@@ -171,17 +171,17 @@ async function handleDynamicRoutes(
     pendingLoading.value = true
     loadingService.showLoading()
 
-    // 获取用户信息
-    const userStore = useUserStore()
-    const isRefresh = from.path === '/'
-    if (isRefresh || !userStore.info || Object.keys(userStore.info).length === 0) {
-      try {
-        const data = await fetchGetUserInfo()
-        userStore.setUserInfo(data)
-      } catch (error) {
-        console.error('获取用户信息失败', error)
-      }
-    }
+    // // 获取用户信息
+    // const userStore = useUserStore()
+    // const isRefresh = from.path === '/'
+    // if (isRefresh || !userStore.info || Object.keys(userStore.info).length === 0) {
+    //   try {
+    //     const data = await fetchGetUserInfo()
+    //     userStore.setUserInfo(data)
+    //   } catch (error) {
+    //     console.error('获取用户信息失败', error)
+    //   }
+    // }
 
     await getMenuData(router)
 
@@ -224,7 +224,7 @@ async function getMenuData(router: Router): Promise<void> {
 async function processFrontendMenu(router: Router): Promise<void> {
   const menuList = asyncRoutes.map((route) => menuDataToRouter(route))
   const userStore = useUserStore()
-  const roles = userStore.info.roles
+  const roles = [userStore.info.roleId.toString()]
 
   if (!roles) {
     throw new Error('获取用户角色失败')

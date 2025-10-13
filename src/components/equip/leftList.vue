@@ -1,5 +1,6 @@
 <template>
   <div class="leftList">
+    <div class="title">{{ title }}</div>
     <div :class="{'selected': item.id === selectedItem, 'item': true}" v-for="item in list" :key="item.key" @click="clickItem1(item)">
       {{ item.label }}
     </div>
@@ -10,6 +11,10 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 const props = defineProps({
+  title: {
+    type: String,
+    default: ''
+  },
   list: {
     type: Array<any>,
     default: () => []

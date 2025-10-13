@@ -136,7 +136,8 @@
   import { useHeaderBar } from '@/composables/useHeaderBar'
   import type { FormInstance, FormRules } from 'element-plus'
   import { useSettingStore } from '@/store/modules/setting'
-
+  // @ts-ignore
+  import { encryptByEcb } from '@/utils/index2'
   defineOptions({ name: 'Login' })
 
   const { t } = useI18n()
@@ -235,26 +236,35 @@
       // 登录请求
       const { username, password } = formData
 
-      const { token, refreshToken } = await fetchLogin({
-        userName: username,
-        password
+      const loginRes = await fetchLogin({
+        username: encryptByEcb(username),
+        password: encryptByEcb(password)
       })
-
-      // 验证token
-      if (!token) {
-        throw new Error('Login failed - no token received')
+      console.log(loginRes,'3333')
+      if (loginRes.code === 1){
+        loginResHandler(loginRes);
       }
+      // const { token, refreshToken } = await fetchLogin({
+      //   username: encryptByEcb(username),
+      //   password: encryptByEcb(password)
+      // })
 
-      // 存储token和用户信息
-      userStore.setToken(token, refreshToken)
-      const userInfo = await fetchGetUserInfo()
-      userStore.setUserInfo(userInfo)
-      userStore.setLoginStatus(true)
+      // // 验证token
+      // if (!token) {
+      //   throw new Error('Login failed - no token received')
+      // }
 
-      // 登录成功处理
-      showLoginSuccessNotice()
-      router.push('/')
+      // // 存储token和用户信息
+      // userStore.setToken(token, refreshToken)
+      // const userInfo = await fetchGetUserInfo()
+      // userStore.setUserInfo(userInfo)
+      // userStore.setLoginStatus(true)
+
+      // // 登录成功处理
+      // showLoginSuccessNotice()
+      // router.push('/')
     } catch (error) {
+      console.log('3333')
       // 处理 HttpError
       if (error instanceof HttpError) {
         // console.log(error.code)
@@ -268,7 +278,54 @@
       resetDragVerify()
     }
   }
-
+   const loginResHandler = (response:any) => {
+    console.log(response);
+      if (response.code === 0) {
+        ElMessage.error(response.msg);
+        return;
+      }
+      if (response.result.code === 1) {
+        loginSecHandler(response);
+      } else {
+        ElMessage.success(response.result.msg);
+      }
+    }
+     const  loginSecHandler = (response:any) => {
+      localStorage.setItem('Authorization', response.result.Authorization);
+      localStorage.setItem('username', response.result.user.username);
+      localStorage.setItem('userId', response.result.user.userId);
+      localStorage.setItem('userUuid', response.result.user.userUuid);
+      localStorage.setItem('fullName', response.result.user.fullName);
+      localStorage.setItem('depId', response.result.user.depId);
+      localStorage.setItem('projectCode', response.result.user.projectCode);
+      localStorage.setItem(
+        'headImage',
+        handleHeadIamge(response.result.user.headImage)
+      );
+      localStorage.setItem('homeCode', 'alarmIndex');
+     console.log(
+        response.result.user.projectCode,
+        ' response.result.user.projectCode'
+      );
+      // return;
+      // 设置登录状态与令牌到 Pinia，确保路由守卫通过
+      try {
+        userStore.setToken(response.result.Authorization)
+        userStore.setLoginStatus(true)
+        userStore.setUserInfo({...response.result.user,...response.result.role})
+      } catch (e) {
+        console.warn('设置登录状态或令牌失败', e)
+      }
+      router.push('/');
+      return;
+    }
+     const handleHeadIamge = (imageUrl: string) => {
+      if (imageUrl) {
+        return imageUrl;
+      } else {
+        return './image/defaultHead.png';
+      }
+    }
   // 重置拖拽验证
   const resetDragVerify = () => {
     dragVerify.value.reset()

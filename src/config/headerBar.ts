@@ -48,7 +48,7 @@ export const headerBarConfig: HeaderBarFeatureConfig = {
     description: '系统设置面板'
   },
   themeToggle: {
-    enabled: true,
+    enabled: false,
     description: '主题切换功能（明暗主题）'
   }
 }

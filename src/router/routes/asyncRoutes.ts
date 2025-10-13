@@ -32,7 +32,7 @@ export const asyncRoutes: AppRouteRecord[] = [
         meta: {
           title: 'menus.dashboard.console',
           keepAlive: false,
-          fixedTab: true
+          fixedTab: false
         }
       }
     ]
@@ -44,7 +44,7 @@ export const asyncRoutes: AppRouteRecord[] = [
     meta: {
       title: 'menus.system.title',
       icon: '&#xe7b9;',
-      roles: ['R_SUPER', 'R_ADMIN']
+      roles: ['R_SUPER', 'R_ADMIN','22']
     },
     children: [
       {
@@ -63,8 +63,8 @@ export const asyncRoutes: AppRouteRecord[] = [
         component: RoutesAlias.Role,
         meta: {
           title: 'menus.system.role',
-          keepAlive: true,
-          roles: ['R_SUPER']
+          keepAlive: false,
+          roles: ['R_SUPER', 'R_ADMIN','22']
         }
       },
       {
@@ -110,7 +110,8 @@ export const asyncRoutes: AppRouteRecord[] = [
     component: RoutesAlias.Layout,
     meta: {
       title: 'menus.result.title',
-      icon: '&#xe715;'
+      icon: '&#xe715;',
+      roles: ['R_SUPER', 'R_ADMIN']
     },
     children: [
       {
@@ -139,7 +140,8 @@ export const asyncRoutes: AppRouteRecord[] = [
     component: RoutesAlias.Layout,
     meta: {
       title: 'menus.exception.title',
-      icon: '&#xe820;'
+      icon: '&#xe820;',
+      roles: ['R_SUPER', 'R_ADMIN']
     },
     children: [
       {
@@ -179,19 +181,39 @@ export const asyncRoutes: AppRouteRecord[] = [
     name: 'Equip',
     component: RoutesAlias.Layout,
     meta: {
-      title: '设备管理',
+      title: 'menus.equip.title',
       icon: '&#xe8ae;',
-      roles: ['R_SUPER', 'R_ADMIN']
+      roles: ['R_SUPER', 'R_ADMIN','22']
     },
     children: [
       {
         path: 'abuild',
-        name: 'EquipBuild',
-        component: RoutesAlias.EquipBuild,
+        name: 'abuild',
+        component: RoutesAlias.EquipaBuild,
         meta: {
-          title: '楼栋',
-          keepAlive: true,
-          roles: ['R_SUPER', 'R_ADMIN']
+          title: 'menus.equip.abuild',
+          keepAlive: false,
+          roles: ['R_SUPER', 'R_ADMIN','22']
+        }
+      },
+      {
+        path: 'bbuild',
+        name: 'bbuild',
+        component: RoutesAlias.EquipbBuild,
+        meta: {
+          title: 'menus.equip.bbuild',
+          keepAlive: false,
+          roles: ['R_SUPER', 'R_ADMIN','22']
+        }
+      },
+      {
+        path: 'cbuild',
+        name: 'cbuild',
+        component: RoutesAlias.EquipcBuild,
+        meta: {
+          title: 'menus.equip.cbuild',
+          keepAlive: false,
+          roles: ['R_SUPER', 'R_ADMIN','22']
         }
       }
     ]
