@@ -235,6 +235,21 @@
       "role": "角色管理",
       "userCenter": "个人中心",
       "menu": "菜单管理"
+    },
+    "equip": {
+      "title": "设备监控",
+      "abuild": "设备监控",
+      "bbuild": "康养楼",
+      "cbuild": "发热门诊"
+    },
+    "point": {
+      "title": "点位配置",
+      "config": "点位配置"
+    },
+    "alarm": {
+      "title": "报警管理",
+      "live": "实时报警",
+      "history": "历史报警"
     }
   },
   "table": {
